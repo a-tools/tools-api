@@ -23,7 +23,7 @@ jobs:
         id: deployment
         with:
           token: ${{ github.token }}
-          environment-url: https://portal-api-dev.fly.dev
+          environment-url: https://github.com/a-tools
           environment: Development
       - name: Update deployment status (success)
         if: success()
@@ -38,6 +38,6 @@ jobs:
         uses: chrnorm/deployment-status@v2
         with:
           token: ${{ github.token }}
-          environment-url: https://portal-api-dev.fly.dev
+          environment-url: https://github.com/a-tools
           state: 'failure'
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}

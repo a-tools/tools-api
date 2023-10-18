@@ -1,0 +1,43 @@
+name: Temp CI - checkout issue
+
+on:
+  push:
+    branches:
+      - main
+
+defaults:
+  run:
+    shell: bash
+
+
+jobs:
+  deploy:
+    name: Deploy Development
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: chrnorm/deployment-action@v2
+        name: Create GitHub deployment
+        id: deployment
+        with:
+          token: ${{ github.token }}
+          environment-url: https://portal-api-dev.fly.dev
+          environment: Development
+      - name: Update deployment status (success)
+        if: success()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ github.token }}
+          environment-url: https://portal-api-dev.fly.dev
+          state: 'success'
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+      - name: Update deployment status (failure)
+        if: failure()
+        uses: chrnorm/deployment-status@v2
+        with:
+          token: ${{ github.token }}
+          environment-url: https://portal-api-dev.fly.dev
+          state: 'failure'
+          deployment-id: ${{ steps.deployment.outputs.deployment_id }}

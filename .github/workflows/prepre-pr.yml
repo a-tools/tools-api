@@ -9,7 +9,6 @@ defaults:
   run:
     shell: bash
 
-
 jobs:
   deploy:
     name: Deploy Development
@@ -38,6 +37,6 @@ jobs:
         uses: chrnorm/deployment-status@v2
         with:
           token: ${{ github.token }}
-          environment-url: https://github.com/a-tools
+          environment-url: https://github.com/a-tools/settings
           state: 'failure'
           deployment-id: ${{ steps.deployment.outputs.deployment_id }}
